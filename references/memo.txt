@@ -1,0 +1,15 @@
+- Script 1 :
+	- input : nom d'une ville + rayon
+	- output : positions gps parsemées dans la ville
+
+- Script 2 : 
+	- input : position gps
+	- output : image google street view
+
+- Script 3 : 
+	- input : image google street view
+	- output : sequence d'image de voiture
+
+- Script 4 :
+	- input : image de voiture
+	- output : type de voiture
