@@ -29,11 +29,11 @@ def from_xy_to_lat_lng(lat_lng_coord, xy_coord):
 
     return new_lng, new_lat
 
-def get_lat_lng(cities, chosen_country, chosen_city):
+def get_lat_lng(cities, chosen_country, chosen_city, nb_points, radius):
 
     lat, lng = [(float(i['lat']), float(i['lng'])) for i in cities
                 if i['country'] == chosen_country and i['name'] == chosen_city][0]
-    xy_coords = get_random_xy(10 * 10 ** 3, 100)
+    xy_coords = get_random_xy(radius, nb_points)
     lat_lng_coords = [from_xy_to_lat_lng((lat, lng), xy_coord) for xy_coord in xy_coords]
 
     return lat_lng_coords
@@ -50,11 +50,11 @@ if __name__ == '__main__':
     # load up the .env entries as environment variables
     load_dotenv(find_dotenv())
 
-    cities_filepath = f"{project_dir}/data/external/cities.json"
+    cities_filepath = "{}/data/external/cities.json".format(project_dir)
 
     with open(cities_filepath) as f:
         cities = json.load(f)
 
-    lat_lng_coords = get_lat_lng(cities, "FR", "Paris")
+    lat_lng_coords = get_lat_lng(cities, "FR", "Paris", 1000, 10 * 10 ** 3)
 
     print(lat_lng_coords)
