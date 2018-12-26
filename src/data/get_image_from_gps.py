@@ -32,10 +32,12 @@ def get_image_from_lat_lng(output_dir, google_api_key, lat_lng_coord):
     results.download_links(output_filepath)
 
 
-class Get_StreetView_Images(object):
+class GetStreetViewImages(object):
+
     def __init__(self, output_dir, google_api_key):
         self.output_dir = output_dir
         self.google_api_key = google_api_key
+
     def __call__(self, lat_lng_coord):
         get_image_from_lat_lng(self.output_dir, self.google_api_key, lat_lng_coord)
 
@@ -64,5 +66,5 @@ if __name__ == '__main__':
     lat_lng_coords = get_lat_lng(cities, country, city, 50, 10 * 10 ** 3)
 
     pool = Pool(os.cpu_count())  # Create a multiprocessing Pool
-    pool.map(Get_StreetView_Images(output_dir, GOOGLE_API_KEY), lat_lng_coords)
+    pool.map(GetStreetViewImages(output_dir, GOOGLE_API_KEY), lat_lng_coords)
 
