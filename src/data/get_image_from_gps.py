@@ -6,14 +6,15 @@ import os
 import google_streetview.api
 import uuid
 
-from pathlib import Path
 from dotenv import find_dotenv, load_dotenv
+from multiprocessing import Pool
+from pathlib import Path
 
 from src.data.gps_partitioning import get_lat_lng
 
 
-def get_image_from_lat_lng(output_file_path, lat, lng, google_api_key):
-
+def get_image_from_lat_lng(output_dir, google_api_key, lat_lng_coord):
+    lat, lng = lat_lng_coord
     # Define parameters for street view api
     params = [{
         'size': '640x640',  # max 640x640 pixels
@@ -25,10 +26,19 @@ def get_image_from_lat_lng(output_file_path, lat, lng, google_api_key):
 
     # Create a results object
     results = google_streetview.api.results(params)
-
+    output_filepath = '{}/{}'.format(output_dir, uuid.uuid4())
     # Download images to directory 'downloads'
-    print('Downloading {})'.format(output_file_path))
-    results.download_links(output_file_path)
+    print('Downloading {})'.format(output_filepath))
+    results.download_links(output_filepath)
+
+
+class Get_StreetView_Images(object):
+    def __init__(self, output_dir, google_api_key):
+        self.output_dir = output_dir
+        self.google_api_key = google_api_key
+    def __call__(self, lat_lng_coord):
+        get_image_from_lat_lng(self.output_dir, self.google_api_key, lat_lng_coord)
+
 
 if __name__ == '__main__':
     log_fmt = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
@@ -49,8 +59,10 @@ if __name__ == '__main__':
 
     country = "FR"
     city = "Bordeaux"
+    output_dir = '{}/data/raw/{}/{}'.format(project_dir, country, city)
 
-    lat_lng_coords = get_lat_lng(cities, country, city, 10, 10 * 10 ** 3)
-    for lat, lng in lat_lng_coords:
-        output_filepath = '{}/data/raw/{}/{}/{}'.format(project_dir, country, city, uuid.uuid4())
-        get_image_from_lat_lng(output_filepath, lat, lng, GOOGLE_API_KEY)
+    lat_lng_coords = get_lat_lng(cities, country, city, 50, 10 * 10 ** 3)
+
+    pool = Pool(os.cpu_count())  # Create a multiprocessing Pool
+    pool.map(Get_StreetView_Images(output_dir, GOOGLE_API_KEY), lat_lng_coords)
+
