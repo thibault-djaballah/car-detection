@@ -50,7 +50,7 @@ if __name__ == '__main__':
 
     data_generator = get_car_images_generator(data_dir_filepath)
 
-    print(predict_maker(data_generator, model))
+    print(Counter(predict_maker(data_generator, model)))
 
 
 
