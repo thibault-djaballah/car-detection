@@ -1,6 +1,9 @@
 ### car-detection project
 
-The car-detection project tries to solve a useless but essential mission:
+
+![Screenshot](http://mmlab.ie.cuhk.edu.hk/datasets/comp_cars/illustration.png)
+") <br/> The car-detection project tries to solve a useless but
+essential mission:
 
 What are the market shares of the automotive makers in a city ?
 
