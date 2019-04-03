@@ -63,7 +63,7 @@ if __name__ == '__main__':
     city = "Bordeaux"
     output_dir = '{}/data/raw/{}/{}'.format(project_dir, country, city)
 
-    lat_lng_coords = get_lat_lng(cities, country, city, 50, 10 * 10 ** 3)
+    lat_lng_coords = get_lat_lng(cities, country, city, 100, 10 * 10 ** 3)
 
     pool = Pool(os.cpu_count())  # Create a multiprocessing Pool
     pool.map(GetStreetViewImages(output_dir, GOOGLE_API_KEY), lat_lng_coords)

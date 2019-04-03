@@ -58,7 +58,7 @@ if __name__ == '__main__':
 
     input_images = get_all_images(project_dir, country, city)
 
-    output_dir = "{}/data/processed/{}/{}".format(project_dir, country, city)
+    output_dir = "{}/data/processed/{}/{}/images".format(project_dir, country, city)
 
     yolo_v2_dir = "{}/models/yolo_v2".format(project_dir)
     options = {"model": "{}/cfg/yolo.cfg".format(yolo_v2_dir),
